@@ -1,0 +1,14 @@
+{
+	"framework": "jasmine",
+	"src_files": [
+		"src/**/*.coffee",
+		"spec/*.coffee"
+	],
+	"before_tests": "coffee -c .",
+	"serve_files": [
+		"node_modules/requirejs/require.js",
+		"src/**/*.js",
+		"spec/*.js"
+	],
+	"on_exit": "rm -R *.js *.map"
+}

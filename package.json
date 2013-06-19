@@ -16,7 +16,8 @@
 	"dependencies": {
 		"backbone": "1.0.x",
 		"underscore": "1.4.x",
-		"coffee-script": "1.6.x"
+		"coffee-script": "1.6.x",
+		"requirejs": "2.1.x"
 	},
 	"license": "MIT"
 }
