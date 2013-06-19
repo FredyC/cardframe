@@ -1,0 +1,22 @@
+{
+	"name": "card-frame",
+	"version": "0.1.0-base",
+	"author": "FredyC <fredy.c@seznam.cz>",
+	"description" : "Javascript framework for testing and developing games based on cards",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/FredyC/cardframe.git"
+	},
+	"keywords": [
+		"game",
+		"card",
+		"framework",
+		"javascript"
+	],
+	"dependencies": {
+		"backbone": "1.0.x",
+		"underscore": "1.4.x",
+		"coffee-script": "1.6.x"
+	},
+	"license": "MIT"
+}
