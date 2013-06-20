@@ -1,10 +1,10 @@
 CardFrame - Card games framework
 =========
 
-Javascript framework for testing and developing games based on cards.
+Javascript framework for testing, developing and playing games based on cards.
 
-Goal of this system is to have simple and scalable framework, that can be extended in many ways and allow to define different set of game cards, decks or areas. 
+Goal of this system is to have simple and scalable framework, that can be extended in many ways and allow to define different set of game cards, decks or areas on game board.
 
-Framework will essentially work just in browser for some easy tasks like testing ideas for game. However for a serious stuff there will be downloadable version using https://github.com/rogerwang/node-webkit that will even allow to host the game for other players.
+Initially there will be limited rendering engine for the browser. However framework should allow to create various outputing methods. That essentially means ability to play same game session using various devices like mobile or even console.
 
-As the framework itself will be rather lightweight, it can be used to develop various game clients, even mobile ones so players from different platform can enjoy game together.
+There will be downloadable development kit using https://github.com/rogerwang/node-webkit. Later it should be also used for hosting game sessions.

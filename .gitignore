@@ -1,5 +1,10 @@
 node_modules
-tests/*.js
-tests/*.map
-src/*.js
-src/*.map
+devnode
+
+spec/*.js
+spec/*.map
+
+src/**/*.js
+src/**/*.map
+
+*.sublime-*

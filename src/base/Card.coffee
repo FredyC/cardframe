@@ -1,2 +1,3 @@
-window.BaseCard = ->
+define ->
+	url: ""
 	

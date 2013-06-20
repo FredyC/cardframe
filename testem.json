@@ -1,14 +1,14 @@
 {
-	"framework": "jasmine",
+	"framework": "mocha+chai",
 	"src_files": [
 		"src/**/*.coffee",
 		"spec/*.coffee"
 	],
-	"before_tests": "coffee -c .",
+	"before_tests": "coffee -cm .",
 	"serve_files": [
 		"node_modules/requirejs/require.js",
-		"src/**/*.js",
+		"spec/setup.js",
+		"node_modules/chai-spies/chai-spies.js",
 		"spec/*.js"
-	],
-	"on_exit": "rm -R *.js *.map"
+	]
 }
