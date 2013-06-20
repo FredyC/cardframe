@@ -1,11 +1,14 @@
 require.config
-	baseUrl: '../src'
-	paths: 
-		Underscore: '../node_modules/underscore/underscore'
-		Backbone: '../node_modules/backbone/backbone'
+	baseUrl: "../src"
+	paths:
+  		"backbone": "../node_modules/backbone/backbone"
+  		"underscore": "../node_modules/underscore/underscore"
+  	shim:
+	    "backbone": 
+	    	deps: ["underscore"]
+	    	exports: "Backbone"
+	    "underscore":
+	    	exports: "_"
 
-	shim:
-		'Backbone': ['Underscore']
-
-mocha.setup 'bdd'
-#chai.use 'chai-spies'
+mocha.setup
+	globals: ["Backbone", "_"]

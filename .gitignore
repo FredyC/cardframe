@@ -1,5 +1,4 @@
 node_modules
-devnode
 
 spec/*.js
 spec/*.map
@@ -7,4 +6,4 @@ spec/*.map
 src/**/*.js
 src/**/*.map
 
-*.sublime-*
+*.log
