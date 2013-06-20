@@ -7,6 +7,6 @@
 	"before_tests": "coffee -c .",
 	"serve_files": [
 		"node_modules/requirejs/require.js",
-		"spec/*.js"
+		"spec/setup.js"
 	]
 }
