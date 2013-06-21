@@ -1,20 +1,20 @@
 require.config
-	baseUrl: "../src"
+	baseUrl: "../"
 	paths:
-  		"backbone": "../node_modules/backbone/backbone-min"
-  		"underscore": "../node_modules/underscore/underscore-min"
-  		"spec": "../spec"
-  	shim:
-	    "backbone": 
-	    	deps: ["underscore"]
-	    	exports: "Backbone"
-	    "underscore":
-	    	exports: "_"
+		"core": "src/core"
+		"Signals": "lib/signals"
 
 mocha.setup
 	ui: "bdd"
-	globals: ["Backbone", "_"]
+	globals: ["Signals"]
+
+should = chai.should()
+chai.use
 
 require [
-	'spec/CardSpec'
-], -> mocha.run()
+	'node_modules/chai-spies/chai-spies'
+	#'spec/ClassSpec'
+	'spec/DictionarySpec'
+], (spies) -> 
+	chai.use(spies)
+	mocha.run()
