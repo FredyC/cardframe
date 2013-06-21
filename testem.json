@@ -1,12 +1,8 @@
 {
-	"framework": "mocha+chai",
+	"test_page": "testRunner.html",
 	"src_files": [
 		"src/**/*.coffee",
 		"spec/*.coffee"
 	],
-	"before_tests": "coffee -c .",
-	"serve_files": [
-		"node_modules/requirejs/require.js",
-		"spec/setup.js"
-	]
+	"before_tests": "coffee -c ."
 }

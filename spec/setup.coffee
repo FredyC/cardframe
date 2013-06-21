@@ -12,9 +12,9 @@ require.config
 	    	exports: "_"
 
 mocha.setup
+	ui: "bdd"
 	globals: ["Backbone", "_"]
 
 require [
 	'spec/CardSpec'
-], (specs...) ->
-	#spec() for spec in specs
+], -> mocha.run()
