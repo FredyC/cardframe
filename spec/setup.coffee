@@ -1,22 +1,23 @@
 require.config
 	baseUrl: "../"
 	paths:
-		"core": "src/core"
 		"Classy": "lib/classy/classy"
-		"Signals": "lib/signals"
+		"core": "src/core"
+		"chai": "node_modules/chai/chai"
 
 mocha.setup
 	ui: "bdd"
 	globals: ["Signals"]
 
-should = chai.should()
-chai.use
-
 require [
-	'node_modules/chai-spies/chai-spies'
-	#'spec/ClassSpec'
-	#'spec/DictionarySpec'
+	'chai'
+	'node_modules/sinon-chai/lib/sinon-chai'
+	'node_modules/sinon/pkg/sinon'
+	#'spec/CoffeeClassSpec'
 	'spec/ClassySpec'
-], (spies) -> 
-	chai.use(spies)
+	'spec/DictionarySpec'
+	
+], (chai, sinonChai) -> 
+	chai.should()
+	chai.use(sinonChai)
 	mocha.run()

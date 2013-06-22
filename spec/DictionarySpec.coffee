@@ -1,75 +1,106 @@
-define ['core/Dictionary'], (Dictionary) ->
+define [
+	'chai'
+	'core/Dictionary'
+	'Classy'
+], (chai, Dictionary, Classy) ->
 
-	expect = chai.expect
 	describe 'Dictionary', ->
 
 		dict = null
-		error = 'Key for dictionary cannot be null'
+
+		testMethodThrow = (method, errMessage, value) ->
+			dict.should.respondTo method
+			ex = new Dictionary.exceptionClass errMessage
+			(-> dict[method](value)).should.throw ex
 
 		beforeEach ->
 			dict = new Dictionary
 
 		it 'should be defined and can be constructed', ->
-			Dictionary.should.be.a 'Function'
-			dict.should.be.ok
 			dict.should.be.an.instanceOf Dictionary
 
-		it 'should accept only non-null keys', ->
-			dict.indexOf.should.be.a 'Function'
+		describe '#indexOf', ->
 
-			testFunc = -> dict.indexOf(null)
-			testFunc.should.throw error
+			it 'should accept only non-null keys', ->
+				testMethodThrow('indexOf', Dictionary.invalidKey) 
 
-		it 'should return index -1 for unknown key', ->
-			dict.indexOf('unknownKey').should.be.equal -1
+			it 'should return index -1 for unknown key', ->
+				dict.indexOf('unknownKey').should.be.equal -1
 
-		it 'should add key/value pair and return it\'s index', ->
-			dict.add.should.be.a 'Function'
+		describe '#add', ->
 
-			testFunc = -> dict.add(null)
-			testFunc.should.throw error
+			it 'should add key/value pair and return it\'s index', ->
+				testMethodThrow('add', Dictionary.invalidKey) 
 
-			idx = dict.add 'someKey', 'someValue'
-			idx.should.be.equal 0
-			dict.indexOf('someKey').should.be.equal 0
+				idx = dict.add 'someKey', 'someValue'
+				idx.should.be.equal 0
+				dict.indexOf('someKey').should.be.equal 0
 
-		it 'should check for key existence', ->
-			dict.has.should.be.a 'Function'
+				idx = dict.add 'otherKey', 'otherValue'
+				idx.should.be.equal 1
+				dict.indexOf('otherKey').should.be.equal 1
 
-			testFunc = -> dict.has(null)
-			testFunc.should.throw error
+		describe '#has', ->
 
-			dict.has('someKey').should.be.false
-			dict.add 'someKey'
-			dict.has('someKey').should.be.true
+			it 'should check for key existence', ->
+				testMethodThrow('has', Dictionary.invalidKey) 
 
-		it 'should retrieve value for the key', ->
-			dict.get.should.be.a 'Function'
+				chai.expect(dict.get 'someKey').to.be.null
+				dict.has('someKey').should.be.false
+				dict.add 'someKey'
+				dict.has('someKey').should.be.true
 
-			testFunc = -> dict.get(null)
-			testFunc.should.throw error
+		describe '#get', ->
 
-			dict.add 'someKey', 'someValue'
-			dict.get('someKey').should.be.equal 'someValue'
+			it 'should retrieve value for the key', ->
+				testMethodThrow('get', Dictionary.invalidKey) 
 
-		it 'should update value for existing key', ->
-			dict.add 'someKey', 'someValue'
-			dict.add 'someKey', 'newValue'
-			dict.get('someKey').should.be.equal 'newValue'
+				dict.add 'someKey', 'someValue'
+				dict.get('someKey').should.be.equal 'someValue'
 
-		it 'should remove key/value pair', ->
-			dict.remove.should.be.a 'Function'
+			it 'should return updated value when adding existing key', ->
+				dict.add 'someKey', 'someValue'
+				dict.get('someKey').should.be.equal 'someValue'
+				dict.add 'someKey', 'newValue'
+				dict.get('someKey').should.be.equal 'newValue'
 
-			testFunc = -> dict.remove(null)
-			testFunc.should.throw error
+		describe '#remove', ->
 
-			testRemove = -> dict.remove('someKey')
-			testRemove.should.throw 'Key does not exist'
+			it 'should remove key/value pair', ->
+				testMethodThrow('remove', Dictionary.invalidKey) 
+				testMethodThrow('remove', Dictionary.unknownKey, 'someKey') 
 
-			dict.add 'someKey', 'someValue'
-			
-			testRemove.should.not.throw 'Key does not exist'
-			dict.has('someKey').should.be.false
+				dict.add 'someKey', 'someValue'
+				dict.remove 'someKey'
+				dict.has('someKey').should.be.false
 
-		it 'should iterate over key/value pairs', ->
-			dict.forEach.should.be.a 'Function'
+		describe '#forEach', ->
+
+			beforeEach ->
+				dict = new Dictionary
+				dict.add 'firstKey', 'firstValue'
+				dict.add 'secondKey', 'secondValue'
+				dict.add 'thirdKey', 'thirdValue'
+
+			it 'should accept only valid iterator function', ->
+				testMethodThrow('forEach', Dictionary.noIterator) 
+
+				badIterator = -> throw "bad iterator"
+				testBadIterator = -> dict.forEach badIterator
+				error = new Dictionary.exceptionClass Dictionary.iteratorFail, 'bad iterator'
+				testBadIterator.should.throw error
+
+			it 'should iterate all items and return true', ->
+				spy = sinon.spy()
+				dict.forEach(spy).should.be.true
+				spy.should.have.been.calledThrice
+				spy.should.have.been.calledWith 'secondKey'
+
+			it 'should return false when iterator function returns true and stop the loop', ->
+				spy = sinon.spy (key) ->
+					key is 'secondKey'
+				dict.forEach(spy).should.be.false
+				spy.should.have.been.calledTwice
+				spy.should.not.have.been.calledWith 'thirdKey'
+
+

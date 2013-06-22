@@ -1,11 +1,13 @@
-define ['Classy'], (Classy) ->
+define [
+	'Classy'
+], (Classy) ->
 
-	expect = chai.expect
 	describe 'Classy inheritance', ->
 
 		it 'should be defined', ->
 			Classy.should.exist
 			Classy.should.be.a 'Function'
+			Classy.should.have.ownProperty "$classyVersion", '1.4'
 			Classy.should.itself.respondTo '$extend'
 
 		Person = Classy.$extend
@@ -20,8 +22,9 @@ define ['Classy'], (Classy) ->
 			person.should.have.property 'name', 'A person'
 
 		it 'should create instance without `new` keyword', ->
-			human = Person('A human')
-			human.should.be.an.instanceOf Person
+			human1 = Person('A human')
+			human2 = new Person('A human')
+			human1.should.deep.equal human2
 
 		it 'should call __init__ just once w/o using `new`', ->
 			catched = []
@@ -105,7 +108,7 @@ define ['Classy'], (Classy) ->
 			elder.should.respondTo 'describe'
 			elder.describe().should.equal 'Garry is old!'
 
-		it 'should patch the prototypes correctly', ->
+		it 'should patch the prototypes correctly using $withData', ->
 			called = []
 			Test = Classy.$extend
 				__init__: -> called.push 42

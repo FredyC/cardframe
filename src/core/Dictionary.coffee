@@ -1,24 +1,33 @@
 ###
 Dictionary utility class.
 
-Original author: Brett Jephson
-Original code taken from: https://github.com/brejep/ash-js
-Rewritten and modified to Coffeescript by FredyC
+@author FredyC <fredy.c@seznam.cz>
+Inspired by Brett Jephson code contained in https://github.com/brejep/ash-js
+Rewritten to Coffeescript using Classy (http://classy.pocoo.org/)
 ###
 
-define [], ->
-	invalidKey = 'Key for dictionary cannot be null'
-	unknownKey = 'Key does not exist'
+define ['Classy'], (Classy) ->
+	ExceptionClass = Classy.$extend
+		__init__: (@message, @inner) ->
 
-	class Dictionary
+	classvars = 
+		exceptionClass: ExceptionClass
+		invalidKey: 'Key for dictionary cannot be null'
+		unknownKey: 'Key does not exist'
+		noIterator: 'Need an iterator function'
+		iteratorFail: 'Error encountered during iterator function'
+
+	Dictionary = Classy.$extend
 		# Internal storage for keys
 		keys: null,
 		# Internal storage for values
 		values: null
 
-		constructor: ->
+		__init__: ->
 			@keys = []
 			@values = []
+
+		__classvars__: classvars
 
 		add: (key, value) ->
 			keyIdx = @indexOf key
@@ -32,7 +41,7 @@ define [], ->
 
 		remove: (key) ->
 			keyIdx = @indexOf key
-			throw unknownKey if keyIdx is -1
+			throw @$class.exceptionClass @$class.unknownKey if keyIdx is -1
 			@keys.splice keyIdx, 1
 			@values.splice keyIdx, 1
 
@@ -45,7 +54,18 @@ define [], ->
 			@indexOf(key) isnt -1
 
 		indexOf: (key) ->
-			unless key? then throw invalidKey
+			unless key? then throw @$class.exceptionClass @$class.invalidKey
 			for k, i in @keys 
 				if key is k then return i
 			-1
+
+		forEach: (iterator) ->
+			unless iterator? then throw @$class.exceptionClass @$class.noIterator
+			for key, i in @keys
+				value = @values[i]
+				try
+					return false if true is iterator key, value, i
+				catch ex
+					throw @$class.exceptionClass iteratorFail, ex
+
+			return true
