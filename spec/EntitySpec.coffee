@@ -1,5 +1,6 @@
-define [ 'chai', 'core/Node' ],
-(chai, Node) ->
+define [
+    'chai'
+    'core/Node'
+], (chai, Node) ->
 
-	describe 'Node', ->
-		
+    describe 'Node', ->
